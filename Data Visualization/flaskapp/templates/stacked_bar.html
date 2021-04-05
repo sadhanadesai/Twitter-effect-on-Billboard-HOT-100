@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>{{ title }}</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+</head>
+
+<body>
+    <center>
+        <h1>{{ title }}</h1>
+    </center>
+    <center>
+        <canvas id="chart" width="2000" height="600"></canvas>
+        
+        <script>
+           
+            // get bar chart canvas
+            var ctx = document.getElementById("chart").getContext("2d");
+            console.log({{names|tojson}});
+            steps = 10
+            // max = {{ max }}
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{names|tojson}},
+                    datasets: [{
+                    label: 'Positive',
+                    backgroundColor: "#caf270",
+                    data: {{positive|tojson}},
+                    }, {
+                    label: 'Negative',
+                    backgroundColor: "#45c490",
+                    data: {{negative|tojson}},
+                    }, {
+                    label: 'Neutral',
+                    backgroundColor: "#008d93",
+                    data: {{neutral|tojson}},
+                    }],
+                },
+                options: 
+                {
+                    tooltips: 
+                    {
+                    displayColors: true,
+                        callbacks:
+                        {
+                            mode: 'x',
+                        },
+                    },
+                    scales: 
+                    {
+                        xAxes: [
+                            {
+                                stacked: true,
+                                gridLines: 
+                                {
+                                    display: false,
+                                },
+                                scaleLabel: 
+                                {
+                                    display: true,
+                                    labelString: 'Title'
+                                },
+                                ticks: {
+                                    autoSkip: false,
+                                    maxRotation: 90,
+                                    minRotation: 90
+                                }
+
+                        }],
+                        yAxes: [
+                            {
+                                stacked: true,
+                                ticks: 
+                                {
+                                beginAtZero: true,
+                                },
+                                scaleLabel: 
+                                {
+                                    display: true,
+                                    labelString: 'Number of tweets'
+                                },
+                            type: 'linear',
+                            }]
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: { position: 'top' },
+                    scaleOverride: true,
+                    scaleSteps: steps,
+                    scaleStartValue: 0,
+                    scaleShowVerticalLines: true,
+                    scaleShowGridLines: true,
+                    barShowStroke: true,
+                    scaleShowLabels: true
+                }
+            });
+        </script>
+    </center>
+</body>
+</html>
